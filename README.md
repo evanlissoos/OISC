@@ -21,6 +21,8 @@ The initial plan is to make a basic simulation of the ISA. From there, there's a
     ¯\_(ツ)_/¯
 * Verilog implementation:  
     What happens when you throw HDL on top of this? I'm not sure I really want to find out...
+* Burn it all to the ground:
+    :fire:
 
 ## FAQ
 ##### Why did you use C++?

@@ -17,7 +17,7 @@ The initial plan is to make a basic simulation of the ISA. From there, there's a
     Write a basic parser so whatever sad sons of bitches try to use this can code _somewhat_ easily.
 * Other ISA complience:  
     Building off the parser, implement other ISAs using this steaming pile of shit.
-* LLVM Backend:
+* LLVM Backend:  
     ¯\_(ツ)_/¯
 * Verilog implementation:  
     What happens when you throw HDL on top of this? I'm not sure I really want to find out...

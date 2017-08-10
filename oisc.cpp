@@ -7,66 +7,69 @@
 */
 
 #include "oisc.h"
+
 #include <iostream>
 #include <stdlib>
+#include <string>
 
-template <class width_t>
+// oisc implementation
 oisc::oisc()
 {
-	PC = 0;
-	MEMORY = new width_t[1 << (sizeof(width_t) * 8)];
+	pc = 0;
+	memory = new width_t[MEM_SIZE];
 	memory_owner = true;
 }
 
-template <class width_t>
-oisc::oisc(width_t * memory)
+oisc::oisc(width_t * mem)
 {
-	PC = 0;
-	MEMORY = memory;
+	pc = 0;
+	memory = mem;
 	memory_owner = false;
 }
 
 oisc::~oisc()
 {
-	if(memory_owner)
-		free(memory);
+	if(memory_owner) free(memory);
 }
 
 void oisc::cycle()
 {
 	width_t a, b, c;
-	a = MEMORY[PC];
-	b = MEMORY[PC + 1];
-	c = MEMORY[PC + 2];
-	MEMORY[b] = MEMORY[b] - MEMORY[a];
-	PC = (MEMORY[b] > 0) ? PC + 3 : c;
+	a = memory[pc];
+	b = memory[pc + 1];
+	c = memory[pc + 2];
+	memory[b] = memory[b] - memory[a];
+	pc = (memory[b] > 0) ? pc + 3 : c;
 }
 
 void oisc::run(width_t start_address = 0)
 {
-	PC = start_address;
-	while(PC >= 0)	cycle();
+	pc = start_address;
+	while(pc >= 0)	cycle();
 }
 
-//Print needs to be a user implemented function
-//void oisc::print_info(uint8_t size = 8)
-
-void oisc::load_memory(width_t start_index, width_t end_index, width_t * memory)
+void oisc::load_memory(width_t start_address, width_t end_address, width_t * data)
 {
-
+	std::memcpy(memory + (start_address * sizeof(width_t)), data, (end_address - start_address) * sizeof(data));
 }
 
 width_t * oisc::get_memory()
 {
-	return MEMORY;
+	return memory;
 }
 
 width_t oisc::get_pc()
 {
-	return PC:
+	return pc:
 }
 
-uint32_t oisc::get_width()
+// interactive_oisc implementation
+uint8_t interactive_oisc::get_input()
 {
-	return sizeof(width_t);
+
+}
+
+void interactive_oisc::run(width_t start_address = 0)
+{
+	while(!get_input()) cycle();
 }

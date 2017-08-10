@@ -19,7 +19,7 @@ def parse_file(filename):
 
 
 def print_info(size):
-    print('\nPC: 0x' + format(pc, '04X') + '\nMemory dump:')
+    print('\npc: 0x' + format(pc, '04X') + '\nMemory dump:')
     for i in range(size):
         print('0x' + format(pc + i, '04X') + ': ' + '0x' + format(mem[pc + i], '04X'))
 

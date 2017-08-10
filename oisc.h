@@ -18,10 +18,12 @@ class oisc
 		oisc();
 		oisc(width_t * memory);
 		~oisc();
+		void cycle();
 		void run(width_t start_address = 0);
-		void print_info(uint8_t size = 8);
 		void load_memory(width_t start_index, width_t end_index, width_t * memory);
 		uint32_t get_width();
+		width *  get_memory();
+		width    get_pc();
 	private:
 		width_t PC;
 		width_t * MEMORY;

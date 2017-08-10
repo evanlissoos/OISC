@@ -1,7 +1,7 @@
 # OISC - One Instruction Set Computer
 
 ## Overview:
-This may be the world's shittiest CPU, but it I guess this proves that any CPU, no matter how simple, can do anything.
+This may be the world's shittiest CPU, but I guess this proves that any CPU, no matter how simple, can do anything.
 
 ## Background
 I found out that it's possible to make a Turing Complete ISA with one instruction and apparently I have nothing better to do other than play Overwatch and eat ramen so here I am.

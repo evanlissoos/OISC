@@ -35,7 +35,8 @@ Okay, enough questions.
 
 ## Disclaimer:
 I am not responsible for any negative side effects caused by looking through this project.
-Symptoms may include but are not limited to: depression, shortness of breath, nausea, abdominal pain, diarrhea, swelling, and death.
+Symptoms may include but are not limited to: depression, shortness of breath, nausea, abdominal pain, diarrhea, swelling, and death.  
+
 Please take OISC responsibly.
 
 Please save me, this is not a joke. I am actually dying inside.

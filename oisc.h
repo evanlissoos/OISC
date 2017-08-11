@@ -46,10 +46,12 @@ class oisc
 
 class interactive_oisc: public oisc
 {
+	// Interactive functions
 	public:
-		// Interactive functions
-		uint8_t get_input();
+		void run(volatile uint8_t *continue_running, width_t start_address = 0);
 		void run(width_t start_address = 0);
+	private:
+		uint8_t get_input();
 };
 
 #endif //OISC_H

@@ -5,5 +5,9 @@
 
 int main()
 {
-  return 0;
+	interactive_oisc * test_oisc = new interactive_oisc();
+	test_oisc->run();
+
+	free(test_oisc);
+	return 0;
 }

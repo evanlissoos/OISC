@@ -70,6 +70,7 @@ static uint8_t invalid_input(std::string error_msg)
 oisc::oisc()
 {
 	pc = 0;
+	std::cout << "hi" << std::endl;
 	memory = new width_t[MEM_SIZE];
 	zero_mem(memory);
 	memory_owner = true;
@@ -286,9 +287,9 @@ void interactive_oisc::run(width_t start_address)
 
 	while(true)
 	{
-		cout << "PC: "
-		for(int i = 0; i < num_locations; i++)
-			print_location(start_location + i, memory[start_location + i]);
+		std::cout << "PC: " << pc << std::endl << "Memory: " << std::endl;
+		for(int i = 0; i < 8; i++)
+			print_location(pc + i, memory[pc + i]);
 		num_steps = get_input();
 		while(num_steps > 0)
 		{

@@ -1,16 +1,36 @@
+from __future__ import print_function
 import re
 
 # @TODO: Support for additional ops and support for labels and macros?
 
-supported_ops = {'subleq': subleq()}
 bit_width = 16
 max_val = (1 << bit_width) - 1
 min_val = (1 << (bit_width-1)) * -1
 
-in_filename  = ''
-out_filename = ''
+in_filename  = 'test.asm'
+out_filename = 'test.o'
 data_array = []
 line_number = 0
+start_location = 0x42
+
+class subleq():
+    min_operands = 2
+    max_operands = 3
+
+    def __init__(self):
+        self.min_operands
+        self.max_operands
+
+    def parse_op(self, line_data):
+        data_array.append(parse_literal(line_data[1]))
+        data_array.append(parse_literal(line_data[2]))
+        num_ops = len(line_data) - 1
+        if num_ops is 2:
+            data_array.append(len(data_array) + 1 + start_location)
+        else:
+            data_array.append(parse_literal(line_data[3]))
+
+supported_ops = {'subleq': subleq()}
 
 
 def error(err_message):
@@ -19,7 +39,6 @@ def error(err_message):
 
 #https://stackoverflow.com/questions/34057237/can-i-use-binary-to-write-integer-constants-in-assembly
 def parse_literal(literal):
-    ret_val = None
     original_lit = literal
 
     def test_literal(base):
@@ -27,6 +46,8 @@ def parse_literal(literal):
             ret_val = int(literal, base)
             if (ret_val > max_val) or (ret_val < min_val):
                 error("Invalid literal (out of exceptable bounds for given bit width) '"+ original_lit + "' line: " + str(line_number))
+            return ret_val
+
         except ValueError:
             error("Invalid literal '"+ original_lit + "' line: " + str(line_number))
 
@@ -36,7 +57,7 @@ def parse_literal(literal):
         literal = literal.replace('0h', '')
         literal = literal.replace('$0', '')
         literal = literal.replace('h',  '')
-        test_literal(16)
+        return test_literal(16)
 
     # Octal
     elif literal.startswith('0o') or literal.startswith('0q') or literal.endswith('o') or literal.endswith('q'):
@@ -44,7 +65,7 @@ def parse_literal(literal):
         literal = literal.replace('0q', '')
         literal = literal.replace('o',  '')
         literal = literal.replace('q',  '')
-        test_literal(8)
+        return test_literal(8)
 
     # Binary
     elif literal.startswith('0b') or literal.startswith('0y') or literal.endswith('b') or literal.endswith('y'):
@@ -53,31 +74,11 @@ def parse_literal(literal):
         literal = literal.replace('0y', '')
         literal = literal.replace('b',  '')
         literal = literal.replace('y',  '')
-        test_literal(2)
+        return test_literal(2)
 
     # Decimal
-    else:
-        literal = literal.replace('d',  '')
-        test_literal(10)
-
-    return ret_val
-
-class subleq(op):
-    min_operands = 2
-    max_operands = 3
-
-    def __init__(self):
-        self.min_operands
-        self.max_operands
-
-    def parse_op(line_data):
-        data_array.append(parse_literal(line_data[1]))
-        data_array.append(parse_literal(line_data[2]))
-        num_ops = len(line_data) - 1
-        if num_ops is 2:
-            data_array.append(len(data_array) + 1)
-        else:
-            data_array.append(parse_literal(line_data[3]))
+    literal = literal.replace('d',  '')
+    return test_literal(10)
 
 with open(in_filename, 'r') as in_f:
     for line in in_f:
@@ -100,5 +101,8 @@ binary_data = []
 for data in data_array:
     iteratons = bit_width / 8
     # Get rid of this reversed statement to change endianness of file
-    for i in reversed(range(iteratons)):
+    for i in (range(iteratons)):
         binary_data.append((data >> (i * 8)) & 0xFF)
+
+with open(out_filename, 'wb') as out_f:
+    out_f.write(bytearray(binary_data))

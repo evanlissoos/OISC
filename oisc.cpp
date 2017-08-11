@@ -8,14 +8,10 @@
 
 #include "oisc.h"
 
-#include <iostream>
-#include <stdlib>
-#include <string>
-
 // Helpers
 static std::vector<std::string> * split_string(std::string input_string)
 {
-	std::vector<string> * ret = new std::vector<string>;
+	std::vector<std::string> * ret = new std::vector<std::string>;
 	std::string str;
 	for(uint32_t i = 0; i < input_string.length(); i++)
 	{
@@ -59,10 +55,10 @@ static width_t parse_literal(std::string &literal)
 
 static void zero_mem(volatile width_t * mem)
 {
-	memset(mem, 0, MEM_SIZE * sizeof(width_t));
+	std::memset((void*) mem, 0, MEM_SIZE * sizeof(width_t));
 }
 
-static uint8_t invalid_input(std::string &error_msg)
+static uint8_t invalid_input(std::string error_msg)
 {
 	std::cout << "Invalid input: " << error_msg << std::endl;
 	return 0;
@@ -77,7 +73,7 @@ oisc::oisc()
 	memory_owner = true;
 }
 
-oisc::oisc(width_t * mem)
+oisc::oisc(volatile width_t * mem)
 {
 	pc = 0;
 	memory = mem;
@@ -86,7 +82,7 @@ oisc::oisc(width_t * mem)
 
 oisc::~oisc()
 {
-	if(memory_owner) free(memory);
+	if(memory_owner) free((void *) memory);
 }
 
 void oisc::cycle()
@@ -99,7 +95,7 @@ void oisc::cycle()
 	pc = (memory[b] > 0) ? pc + 3 : c;
 }
 
-void oisc::run(width_t start_address = 0)
+void oisc::run(width_t start_address)
 {
 	pc = start_address;
 	while(pc >= 0)	cycle();
@@ -107,7 +103,7 @@ void oisc::run(width_t start_address = 0)
 
 void oisc::load_memory(width_t start_address, width_t end_address, width_t * data)
 {
-	std::memcpy(memory + (start_address * sizeof(width_t)), data, (end_address - start_address) * sizeof(data));
+	memcpy((void *) (memory + (start_address * sizeof(width_t))), (void *) data, (end_address - start_address) * sizeof(data));
 }
 
 volatile width_t * oisc::get_memory()
@@ -117,7 +113,7 @@ volatile width_t * oisc::get_memory()
 
 width_t oisc::get_pc()
 {
-	return pc:
+	return pc;
 }
 
 // interactive_oisc implementation
@@ -125,67 +121,66 @@ uint8_t interactive_oisc::get_input()
 {
 	std::string input;
 	std::cin >> input;
-	std::vector<string> * parsed_input = split_string(input);
-	uint8_t num_args = parsed_input.length();
+	std::vector<std::string> * parsed_input = split_string(input);
+	uint8_t num_args = parsed_input->size();
 
-	if("print" == parsed_input[0])
+	if(std::strcmp("print", (*parsed_input)[0].c_str()) == 0)
 	{
 		switch(num_args)
 		{
 			case 1:
-				return invalid_input("Too few arguments for command 'print'.");
+				return invalid_input(std::string("Too few arguments for command 'print'."));
 			case 2:
-				width_t location = std::stoi(parsed_input[1]);
+				width_t location = std::stoi((*parsed_input)[1]);
 				print_location(location, memory[location]);
 				return 0;
 			default:
-				return invalid_input("Too many arguments for command 'print'.");
+				return invalid_input(std::string("Too many arguments for command 'print'."));
 		}
 
 	}
-	else if("continue" == parsed_input[0])
+	else if(std::strcmp("continue", (*parsed_input)[0].c_str()) == 0)
 	{
 		switch(num_args)
 		{
 			case 1:
-				num_steps = 1;
-				return 0;
+				return 1;
 			default:
-				return invalid_input("Too many arguments for command 'continue'.");
+				return invalid_input(std::string("Too many arguments for command 'continue'."));
 		}
 	}
-	else if("stop" == parsed_input[0] ||
-					"halt" == parsed_input[0] ||
-					"quit" == parsed_input[0] ||
-					"exit" == parsed_input[0])
+	else if(std::strcmp("top", (*parsed_input)[0].c_str()) == 0 ||
+					std::strcmp("halt", (*parsed_input)[0].c_str()) == 0 ||
+					std::strcmp("quit", (*parsed_input)[0].c_str()) == 0 ||
+					std::strcmp("exit", (*parsed_input)[0].c_str()) == 0)
 	{
 		switch(num_args)
 		{
 			case 1:
 				return -1;
 			default:
-				return invalid_input("Too many arguments for command '" + parsed_input[0] + "'.");
+				return invalid_input(std::string("Too many arguments for command '" )+ (*parsed_input)[0].c_str() + "'.");
 		}
 	}
-	else if("load" == parsed_input[0] ||
-					"ld" == parsed_input[0])
+	else if(std::strcmp("load", (*parsed_input)[0].c_str()) == 0 ||
+					std::strcmp("ld", (*parsed_input)[0].c_str()) == 0)
 	{
 		//@TODO: Load some binary into memory
 		return 0;
 	}
-	else if("set" == parsed_input[0])
+	else if(std::strcmp("et", (*parsed_input)[0].c_str()) == 0)
 	{
 		switch(num_args)
 		{
 			case 1:
 			case 2:
-				return invalid_input("Too few arguments for command 'set'.");
+				return invalid_input(std::string("Too few arguments for command 'set'."));
 			case 3:
-				memory[parse_literal(parsed_input[1])] = memory[parse_literal(parsed_input[2])];
+				memory[parse_literal((*parsed_input)[1])] = memory[parse_literal((*parsed_input)[2])];
 				return 0;
 		}
 	}
-	else if("memdump" == parsed_input[0])
+	else if(std::strcmp("memdump", (*parsed_input)[0].c_str()) == 0)
 	{
 		uint8_t num_locations = 8;
 		width_t start_location = pc;
@@ -195,19 +190,19 @@ uint8_t interactive_oisc::get_input()
 			case 1:
 				break;
 			case 3:
-				start_location = std::stoi(parsed_input[2]);
+				start_location = std::stoi((*parsed_input)[2]);
 			case 2:
-				num_locations = parse_literal(parsed_input[1]);
+				num_locations = parse_literal((*parsed_input)[1]);
 				break;
 			default:
-				return invalid_input("Too many arguments for command 'memdump'.");
+				return invalid_input(std::string("Too many arguments for command 'memdump'."));
 		}
 
 		for(int i = 0; i < num_locations; i++)
 			print_location(start_location + i, memory[start_location + i]);
 		return 0;
 	}
-	else if("reset" == parsed_input[0])
+	else if(std::strcmp("reset", (*parsed_input)[0].c_str()) == 0)
 	{
 		switch(num_args)
 		{
@@ -216,15 +211,15 @@ uint8_t interactive_oisc::get_input()
 				pc = 0;
 				return 0;
 			default:
-				return invalid_input("Too many arguments for command 'reset'.");
+				return invalid_input(std::string("Too many arguments for command 'reset'."));
 		}
 	}
-	else if("import" == parsed_input[0])
+	else if(std::strcmp("import", (*parsed_input)[0].c_str()) == 0)
 	{
 		//@TODO: Import some sort of file
 		return 0;
 	}
-	else if("step" == parsed_input[0])
+	else if(std::strcmp("tep", (*parsed_input)[0].c_str()) == 0)
 	{
 		uint64_t num_steps = 1;
 		switch(num_args)
@@ -232,13 +227,13 @@ uint8_t interactive_oisc::get_input()
 			case 1:
 				break;
 			case 2:
-				num_steps = parse_literal(parsed_input[1]);
+				num_steps = parse_literal((*parsed_input[1]));
 			default:
-				return invalid_input("Too many arguments for command 'step'.");
+				return invalid_input(std::string("Too many arguments for command 'step'."));
 		}
 		return num_steps;
 	}
-	else if("subleq" == parsed_input[0])
+	else if(std::strcmp("ubleq", (*parsed_input)[0].c_str()) == 0)
 	{
 		width_t a,b;
 		width_t c = pc + 3;
@@ -246,15 +241,15 @@ uint8_t interactive_oisc::get_input()
 		{
 			case 1:
 			case 2:
-				return invalid_input("Too few arguments for command 'subleq'.");
+				return invalid_input(std::string("Too few arguments for command 'subleq'."));
 			case 4:
-				c = parse_literal(parsed_input[4]);
+				c = parse_literal((*parsed_input)[4]);
 			case 3:
-				a = parse_literal(parsed_input[2]);
-				b = parse_literal(parsed_input[3]);
+				a = parse_literal((*parsed_input)[2]);
+				b = parse_literal((*parsed_input)[3]);
 				break;
 			default:
-				return invalid_input("Too many arguments for command 'subleq'.");
+				return invalid_input(std::string("Too many arguments for command 'subleq'."));
 		}
 		memory[pc]     = a;
 		memory[pc + 1] = b;
@@ -263,11 +258,11 @@ uint8_t interactive_oisc::get_input()
 	}
 	else
 	{
-		return invalid_input("Command not recognized.");
+		return invalid_input(std::string("Command not recognized."));
 	}
 }
 
-void interactive_oisc::run(volatile uint8_t *continue_running, width_t start_address = 0)
+void interactive_oisc::run(volatile uint8_t *continue_running, width_t start_address)
 {
 	pc = start_address;
 	uint64_t num_steps;

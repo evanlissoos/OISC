@@ -3,13 +3,14 @@ from metadata import *
 
 # Called on label pass
 def parse_labels(line):
-    global cur_address
+	# Check if empty line
     if line.split() is '':
         return
 
     # Ignoring comments
     line = (line.split(';'))[0]
 
+	# Parse label
     label_split = line.split(':')
     if len(label_split) is not 1:
         new_label = label_split[0].strip()
@@ -21,6 +22,7 @@ def parse_labels(line):
             return
         line = label_split[1]
 
+	# Calculating address
     for key in meta.supported_ops:
         if key in line:
             meta.cur_address += meta.supported_ops[key].total_mem

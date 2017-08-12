@@ -7,7 +7,7 @@ This may be the world's shittiest CPU, but I guess this proves that any CPU, no 
 I found out that it's possible to make a Turing Complete ISA with one instruction and apparently I have nothing better to do other than play Overwatch and eat ramen so here I am.
 
 ## The Instruction
-The instruction implemented is `subleq` which is shorthand for subtract and branch if not equal to zero. There are two different syntaxes for the instruction: 3 argument and 2 argument.
+The instruction implemented is `subleq` which is shorthand for subtract and branch if less than or equal to zero. There are two different syntaxes for the instruction: 3 argument and 2 argument.
 * 3 Argument:
 ```assembly
 subleq a, b, c   ; Mem[b] = Mem[b] - Mem[a]

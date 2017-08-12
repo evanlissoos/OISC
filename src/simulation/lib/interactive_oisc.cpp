@@ -1,12 +1,19 @@
 /*
 * @file xc.cpp
-* Implementation for OISC
+* Implementation for Interactive OISC
 *
 * @author:  Evan Lissoos
-* @date Created:  8/5/17
+* @date Created:  8/11/17
 */
 
-#include "oisc.h"
+#include "interactive_oisc.h"
+#include <iostream>
+#include <vector>
+#include <string>
+#include <iomanip>
+#include <fstream>
+
+using namespace std;
 
 #define PRINT_HEX "0x" << setfill('0') << setw(sizeof(width_t)*2) << hex
 
@@ -28,16 +35,6 @@ static void split_string(const string &input_string, vector<string> *vec)
 		vec->push_back(str);
 }
 
-/*
-static uint8_t is_in(string &value, vector<string> &list)
-{
-	// Ooo look at me I'm hot shit becasue I can interate
-	for(auto it = list.begin(); it != list.end(); ++it)
-		if(*it == value)	return true;
-	return false;
-}
-*/
-
 static void print_location(width_t location, width_t value)
 {
 	cout << PRINT_HEX << location << ": " << PRINT_HEX << value << endl;
@@ -55,67 +52,10 @@ static width_t parse_literal(string &literal)
 		return stoi(literal);
 }
 
-static void zero_mem(volatile width_t * mem)
-{
-	memset((void*) mem, 0, MEM_SIZE * sizeof(width_t));
-}
-
 static uint8_t invalid_input(string error_msg)
 {
 	cout << "Invalid input: " << error_msg << endl;
 	return 0;
-}
-
-// oisc implementation
-oisc::oisc()
-{
-	pc = 0;
-	memory = new width_t[MEM_SIZE];
-	zero_mem(memory);
-	memory_owner = true;
-}
-
-oisc::oisc(volatile width_t * mem)
-{
-	pc = 0;
-	memory = mem;
-	memory_owner = false;
-}
-
-oisc::~oisc()
-{
-	if(memory_owner) free((void *) memory);
-}
-
-void oisc::cycle()
-{
-	width_t a, b, c;
-	a = memory[pc];
-	b = memory[pc + 1];
-	c = memory[pc + 2];
-	memory[b] = memory[b] - memory[a];
-	pc = (memory[b] > 0) ? pc + 3 : c;
-}
-
-void oisc::run(width_t start_address)
-{
-	pc = start_address;
-	while(pc >= 0)	cycle();
-}
-
-void oisc::load_memory(width_t start_address, width_t end_address, width_t * data)
-{
-	memcpy((void *) (memory + (start_address * sizeof(width_t))), (void *) data, (end_address - start_address) * sizeof(data));
-}
-
-volatile width_t * oisc::get_memory()
-{
-	return memory;
-}
-
-width_t oisc::get_pc()
-{
-	return pc;
 }
 
 // interactive_oisc implementation
@@ -187,7 +127,7 @@ width_t interactive_oisc::get_input()
 				if(length > MAX_PROGRAM_SIZE)
 				{
 					file_in.close();
-					return invalid_input(string("Too many arguments for command '"+ (*parsed_input)[0] +"'."));
+					return invalid_input(string("Invalid file input."));
 				}
 
 				file_in.read((char *) &(memory[LOAD_ADDRESS]), length);
@@ -255,7 +195,8 @@ width_t interactive_oisc::get_input()
 		//@TODO: Import some sort of file
 		return 0;
 	}
-	else if(strcmp("step", (*parsed_input)[0].c_str()) == 0)
+	else if(strcmp("step", (*parsed_input)[0].c_str()) == 0 ||
+					strcmp("s", (*parsed_input)[0].c_str()) == 0)
 	{
 		switch(num_args)
 		{

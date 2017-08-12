@@ -1,4 +1,7 @@
-subleq 0x4B, 0
-subleq 0, 0x4C
+subleq a, 0 ; This is a test comment
+subleq 0, b
 subleq 0, 0
-subleq 4, 6
+a:
+.data 1
+b:
+.data 2

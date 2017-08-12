@@ -18,7 +18,7 @@ The initial plan is to make a basic simulation of the ISA. From there, there's a
 * Other ISA complience:  
     Building off the parser, implement other ISAs using this steaming pile of shit.
 * LLVM Backend:  
-    ¯\_(ツ)_/¯
+    ¯\\\_(ツ)\_/¯
 * Verilog implementation:  
     What happens when you throw HDL on top of this? I'm not sure I really want to find out...
 * Burn it all to the ground:  
@@ -44,3 +44,7 @@ Symptoms may include but are not limited to: depression, shortness of breath, na
 Please take OISC responsibly.
 
 Please save me, this is not a joke. I am actually dying inside.
+
+## Current to-do list:
+* Support for labels in the assembler (and maybe offsets)
+* Support for more complex instructions

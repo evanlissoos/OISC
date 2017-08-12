@@ -10,18 +10,11 @@
 #define OISC_H
 
 #include <cstdint>
-#include <iostream>
-#include <vector>
-#include <string>
-#include <iomanip>
-#include <fstream>
-using namespace std;
 
 #define width_t    uint16_t
 
 #define BIT_WIDTH         (8 * sizeof(width_t))
 #define MEM_SIZE          (1 << BIT_WIDTH)
-
 #define LOAD_ADDRESS      0x42
 #define MAX_PROGRAM_SIZE  (MEM_SIZE - LOAD_ADDRESS)
 
@@ -48,14 +41,7 @@ class oisc
 		uint8_t   memory_owner;
 };
 
-class interactive_oisc: public oisc
-{
-	// Interactive functions
-	public:
-		void run(volatile uint8_t *continue_running, width_t start_address = 0);
-		void run(width_t start_address = 0);
-	private:
-		width_t get_input();
-};
+// Helpers
+void zero_mem(volatile width_t * mem);
 
 #endif //OISC_H

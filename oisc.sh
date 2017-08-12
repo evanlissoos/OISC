@@ -2,7 +2,7 @@
 
 COMMAND=${1:-help}
 IN_FILE=${2}
-OUT_FILE=${3:-out.o}
+OUT_FILE=${3:-out.bin}
 
 if [ $COMMAND == "help" ]; then
   echo Possible commands are: help, init, asm and sim

@@ -5,7 +5,7 @@ from oisc_lib import *
 # Argument parsing
 parser = ArgumentParser()
 parser.add_argument('-i', '--in_filename', help="Input file", metavar='IN')
-parser.add_argument('-o', '--out_filename', help="Output file", default='out.o', metavar='OUT')
+parser.add_argument('-o', '--out_filename', help="Output file", default='out.bin', metavar='OUT')
 args = parser.parse_args()
 in_filename  = args.in_filename
 out_filename = args.out_filename

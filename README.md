@@ -15,8 +15,8 @@ subleq a, b, c   ; Mem[b] = Mem[b] - Mem[a]
 ```
 * 2 Argument:
 ```assembly
-subleq a, b   ; Mem[b] = Mem[b] - Mem[a]
-              ; goto PC + 3
+subleq a, b      ; Mem[b] = Mem[b] - Mem[a]
+                 ; goto PC + 3
 ```
 
 ## How To Use

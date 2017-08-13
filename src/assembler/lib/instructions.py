@@ -70,7 +70,7 @@ class sub():
 		meta.data_array.append(parse_literal(line_data[2]))
 		meta.data_array.append(len(meta.data_array) + cpu.start_location + 1)
 
-# m[b] = m[a]
+# m[op2] = m[op1]
 class mov():
 	# Instruction data
 	def __init__(self):
@@ -99,5 +99,19 @@ class mov():
 		meta.data_array.append(0)
 		meta.data_array.append(len(meta.data_array) + cpu.start_location + 1)
 
+# pc = op
+class jmp():
+	# Instruction data
+	def __init__(self):
+		self.min_operands = 1
+		self.max_operands = 1
+		self.total_mem    = 3
 
-meta.supported_ops = {'subleq': subleq(), 'data': data(), 'add': add(), 'sub':sub(), 'mov':mov()}
+	# Parse function
+	def parse_op(self, line_data):
+		# First instruction
+		meta.data_array.append(0)
+		meta.data_array.append(0)
+		meta.data_array.append(parse_literal(line_data[1]))
+
+meta.supported_ops = {'subleq': subleq(), 'data': data(), 'add': add(), 'sub':sub(), 'mov':mov(), 'jmp':jmp()}

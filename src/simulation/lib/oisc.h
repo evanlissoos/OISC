@@ -10,14 +10,7 @@
 #define OISC_H
 
 #include <cstdint>
-
-#define width_t    uint16_t
-
-#define BIT_WIDTH         (8 * sizeof(width_t))
-#define MEM_SIZE          (1 << BIT_WIDTH)
-#define LOAD_ADDRESS      0x42
-#define MAX_PROGRAM_SIZE  (MEM_SIZE - LOAD_ADDRESS)
-
+#include "cpu.h"
 
 class oisc
 {

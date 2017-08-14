@@ -5,6 +5,8 @@
 #include <string>
 #include <thread>
 
+#define INTERACTIVE_MODE 1
+
 using namespace std;
 
 static void run_interactive()
@@ -38,7 +40,10 @@ static void run_oisc(string filename)
 
 int main()
 {
+#if INTERACTIVE_MODE
+	run_interactive();
+#else
 	run_oisc(string("out.bin"));
-	//run_interactive();
+#endif
 	return 0;
 }

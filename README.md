@@ -22,12 +22,12 @@ subleq a, b	  ; Mem[b] = Mem[b] - Mem[a]
 ## How To Use
 1. To start off, you'll need to initialize the program. Run: `sh oisc.sh init`.
 2. Boom, set up is done. Now you can run do whatever you want. Run `sh oisc.sh asm IN_FILENAME [OUT_FILENAME]` to assemble an assembly file. `IN_FILENAME` is the assembly file you input and `OUT_FILENAME` is the _optional_ binary output name. Default is out.bin.
-3. Run `sh oisc.sh sim` to run the interactive simulator.
+3. Run `sh oisc.sh sim` to run the interactive simulator. By default, the simulator runs in interactive mode. To try out a demo of memory mapped IO, assemble the `test/io_test.asm` file, change the `#define INTERACTIVE_MODE` to zero, run `sh oisc.sh init` and then run the simulator!
 
 ## Assembly Syntax
 ### Instructions:
   For the native instruction set, there are the variations of the instruction supported: two and three argument as seen n **The Instruction** section.  
-  
+
 ```assembly
 subleq 0, 1, 3
 subleq 0, 1

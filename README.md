@@ -10,8 +10,8 @@ I found out that it's possible to make a Turing Complete ISA with one instructio
 The instruction implemented is `subleq` which is shorthand for subtract and branch if less than or equal to zero. There are two different syntaxes for the instruction: 3 argument and 2 argument.
 * 3 Argument:
 ```assembly
-subleq a, b, c   ; Mem[b] = Mem[b] - Mem[a]
-                 ; if (Mem[b] ≤ 0) goto c
+subleq a, b, c    ; Mem[b] = Mem[b] - Mem[a]
+                  ; if (Mem[b] ≤ 0) goto c
 ```
 * 2 Argument:
 ```assembly
@@ -72,8 +72,8 @@ data 0o345
 
 ```assembly
 A:
-subleq 0, 0    ; MEM[0] = 0
-subleq 0, 0, A ; JMP A
+subleq 0, 0     ; MEM[0] = 0
+subleq 0, 0, A  ; JMP A
 ```
 
 

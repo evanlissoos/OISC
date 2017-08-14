@@ -11,7 +11,7 @@ in_filename  = args.in_filename
 out_filename = args.out_filename
 
 with open(in_filename, 'r') as in_file:
-    label_pass(in_file)
-    binary_pass(in_file)
+	label_pass(in_file)
+	binary_pass(in_file)
 
 binary_output(out_filename)

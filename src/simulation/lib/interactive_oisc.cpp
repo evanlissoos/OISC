@@ -11,7 +11,6 @@
 #include <vector>
 #include <string>
 #include <iomanip>
-#include <fstream>
 
 using namespace std;
 
@@ -119,24 +118,8 @@ width_t interactive_oisc::get_input()
 				return invalid_input(string("Too few arguments for command '"+ (*parsed_input)[0] +"'."));
 			case 2:
 			{
-				ifstream file_in((*parsed_input)[1], ios::in | ios::binary);
-				file_in.seekg(0, file_in.end);
-				width_t length = file_in.tellg();
-				file_in.seekg(0, file_in.beg);
-
-				if(length > MAX_PROGRAM_SIZE)
-				{
-					file_in.close();
-					return invalid_input(string("Invalid file input."));
-				}
-
-				file_in.read((char *) &(memory[LOAD_ADDRESS]), length);
-				file_in.close();
-
-				// Loading jump to start address at current PC location
-				memory[pc]     = 0;
-				memory[pc + 1] = 0;
-				memory[pc + 2] = LOAD_ADDRESS;
+				// Load binary into memory
+				if(this->load_file((*parsed_input)[1])) return invalid_input(string("Invalid file input."));
 				return 0;
 			}
 			default:
@@ -183,7 +166,7 @@ width_t interactive_oisc::get_input()
 		switch(num_args)
 		{
 			case 1:
-				zero_mem(memory);
+				this->zero_mem();
 				pc = 0;
 				return 0;
 			default:

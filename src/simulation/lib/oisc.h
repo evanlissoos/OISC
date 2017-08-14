@@ -10,7 +10,11 @@
 #define OISC_H
 
 #include <cstdint>
+#include <string>
+#include <fstream>
 #include "cpu.h"
+
+using namespace std;
 
 class oisc
 {
@@ -19,22 +23,21 @@ class oisc
 		oisc();
 		oisc(volatile width_t * mem);
 		~oisc();
-		// Setup and run functions
-		void run(width_t start_address = 0);
-		void load_memory(width_t start_address, width_t end_address, width_t * data);
 		// Getters
-		volatile width_t *  get_memory();
-		width_t    get_pc();
+		volatile width_t * get_memory();
+		width_t			get_pc();
+		// Setup and run functions
+		void	run(width_t start_address = 3);
+		void	load_memory(width_t start_address, width_t end_address, width_t * data);
+		uint8_t load_file(string filename);
+		void	zero_mem();
 	protected:
 		// Simulation function
 		void cycle();
 		// Attributes
-		width_t   pc;
+		width_t			pc;
 		volatile width_t * memory;
-		uint8_t   memory_owner;
+		uint8_t			memory_owner;
 };
-
-// Helpers
-void zero_mem(volatile width_t * mem);
 
 #endif //OISC_H

@@ -17,4 +17,7 @@ elif [ $COMMAND == "clean" ]; then
 	rm src/simulation/oisc 2> /dev/null
 	rm src/assembler/lib/*.pyc 2> /dev/null
 	rm src/assembler/*.pyc 2> /dev/null
+	rm -rf src/assembler/__pycache__ 2> /dev/null
+	rm -rf src/assembler/lib/__pycache__ 2> /dev/null
+	rm out.bin
 fi

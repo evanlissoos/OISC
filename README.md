@@ -11,12 +11,12 @@ The instruction implemented is `subleq` which is shorthand for subtract and bran
 * 3 Argument:
 ```assembly
 subleq a, b, c   ; Mem[b] = Mem[b] - Mem[a]
-                 ; if (Mem[b] ≤ 0) goto c
+				 ; if (Mem[b] ≤ 0) goto c
 ```
 * 2 Argument:
 ```assembly
-subleq a, b      ; Mem[b] = Mem[b] - Mem[a]
-                 ; goto PC + 3
+subleq a, b	  ; Mem[b] = Mem[b] - Mem[a]
+				 ; goto PC + 3
 ```
 
 ## How To Use
@@ -71,7 +71,7 @@ data 0o345
 
 ```assembly
 A:
-subleq 0, 0    ; MEM[0] = 0
+subleq 0, 0	; MEM[0] = 0
 subleq 0, 0, A ; JMP A
 ```
 
@@ -80,19 +80,19 @@ subleq 0, 0, A ; JMP A
 In life? None. But I'm assuming you mean this project, Mr. Big Text Man.
 The initial plan is to make a basic simulation of the ISA. From there, there's a lot I'd like to do with this:
 * Memory mapped IO:  
-    Have a thread monitor some memory locations of the simulation and handle them as IO.
+	Have a thread monitor some memory locations of the simulation and handle them as IO.
 * Massively parallel simulation:  
-    Using a shared memory space, it'd be interesting to combine a bunch of these shitty little cores (possibly with GPU acceleration).
+	Using a shared memory space, it'd be interesting to combine a bunch of these shitty little cores (possibly with GPU acceleration).
 * Parser:  
-    Write a basic parser so whatever sad sons of bitches try to use this can code _somewhat_ easily.
+	Write a basic parser so whatever sad sons of bitches try to use this can code _somewhat_ easily.
 * Other ISA complience:  
-    Building off the parser, implement other ISAs using this steaming pile of shit.
+	Building off the parser, implement other ISAs using this steaming pile of shit.
 * LLVM Backend:  
-    ¯\\\_(ツ)\_/¯
+	¯\\\_(ツ)\_/¯
 * Verilog implementation:  
-    What happens when you throw HDL on top of this? I'm not sure I really want to find out...
+	What happens when you throw HDL on top of this? I'm not sure I really want to find out...
 * Burn it all to the ground:  
-    :fire::fire::fire:
+	:fire::fire::fire:
 
 ## FAQ
 ##### Why did you use C++?

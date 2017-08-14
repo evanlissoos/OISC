@@ -116,8 +116,7 @@ Symptoms may include but are not limited to: depression, shortness of breath, na
 
 Please take OISC responsibly.
 
-Please save me, this is not a joke. I am actually dying inside.
-
 ## Current to-do list:
-* Support for labels in the assembler (and maybe offsets)
-* Support for more complex instructions
+* Memory mapped IO :white_check_mark:
+* Support for labels in the assembler :white_check_mark: (and maybe offsets)
+* Support for more complex instructions (in progress)

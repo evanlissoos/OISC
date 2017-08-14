@@ -15,8 +15,8 @@ class interactive_oisc: public oisc
 {
 	// Interactive functions
 	public:
-		void run(volatile uint8_t *continue_running, width_t start_address = 0);
-		void run(width_t start_address = 0);
+		void run(volatile uint8_t *continue_running, width_t start_address = 3);
+		void run(width_t start_address = 3);
 	private:
 		width_t get_input();
 };

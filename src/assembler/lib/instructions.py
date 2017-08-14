@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 from lib.metadata import *
 from lib.parse import *
 
@@ -129,4 +129,64 @@ class jmp():
 		meta.data_array.append(0)
 		meta.data_array.append(parse_literal(line_data[1]))
 
-meta.supported_ops = {'subleq': subleq(), 'data': data(), 'add': add(), 'inc': inc(), 'sub':sub(), 'mov':mov(), 'jmp':jmp()}
+# m[b] = m[a] * m[b]
+class mul():
+	# Instruction data
+	def __init__(self):
+		self.min_operands = 2
+		self.max_operands = 2
+		self.total_mem	= 27
+
+	# Parse function
+	def parse_op(self, line_data):
+		op1 = parse_literal(line_data[1])
+		op2 = parse_literal(line_data[2])
+		total = len(meta.data_array) + cpu.start_location + 1
+		# First instruction (data/nop)
+		meta.data_array.append(0)
+		meta.data_array.append(0)
+		meta.data_array.append(len(meta.data_array) + cpu.start_location + 1)
+		# Second instruction (inc)
+		meta.data_array.append(0x35)
+		meta.data_array.append(op2)
+		top = len(meta.data_array) + cpu.start_location + 1
+		meta.data_array.append(top)
+		# Third instruction (subleq)
+		meta.data_array.append(0x36)
+		meta.data_array.append(op2)
+		meta.data_array.append(top+12)
+		# Fourth instruction (add)
+		meta.data_array.append(op1)
+		meta.data_array.append(0)
+		meta.data_array.append(len(meta.data_array) + cpu.start_location + 1)
+		meta.data_array.append(0)
+		meta.data_array.append(total)
+		meta.data_array.append(len(meta.data_array) + cpu.start_location + 1)
+		meta.data_array.append(0)
+		meta.data_array.append(0)
+		meta.data_array.append(top)
+		# Fifth instruction (add)
+		meta.data_array.append(total)
+		meta.data_array.append(0)
+		meta.data_array.append(len(meta.data_array) + cpu.start_location + 1)
+		meta.data_array.append(0)
+		meta.data_array.append(op2)
+		meta.data_array.append(len(meta.data_array) + cpu.start_location + 1)
+		meta.data_array.append(0)
+		meta.data_array.append(0)
+		meta.data_array.append(len(meta.data_array) + cpu.start_location + 1)
+
+class halt():
+	# Instruction data
+	def __init__(self):
+		self.min_operands = 0
+		self.max_operands = 0
+		self.total_mem	= 3
+
+	# Parse function
+	def parse_op(self, line_data):
+		meta.data_array.append(0)
+		meta.data_array.append(0)
+		meta.data_array.append(0)
+
+meta.supported_ops = {'subleq': subleq(), 'jmp':jmp(), 'mov':mov(), 'data': data(), 'add': add(), 'inc': inc(), 'sub':sub(), 'mul':mul(), 'halt': halt()}

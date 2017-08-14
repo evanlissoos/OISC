@@ -21,6 +21,10 @@
 // Data addresses     (64d)
 #define DISPLAY_FLAG	    0x40
 #define DISPLAY_DATA	    0x41
+// Negone location
+#define NEG_ONE           0x35
+// Posone location
+#define POS_ONE           0x36
 
 // CPU parameters dependent on other fields
 #define BIT_WIDTH		    (8 * sizeof(width_t))

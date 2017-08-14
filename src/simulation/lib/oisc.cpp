@@ -17,10 +17,12 @@
 */
 oisc::oisc()
 {
-	// Allocate memery and mark as owner of memory
+	// Allocate memory and mark as owner of memory
 	pc = 3;
 	memory = new width_t[MEM_SIZE];
 	this->zero_mem();
+	memory[NEG_ONE] = 0xFFFF;
+	memory[POS_ONE] = 0x0001;
 	memory_owner = true;
 }
 

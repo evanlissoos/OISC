@@ -15,8 +15,8 @@
 
 using namespace std;
 
-#define INTERACTIVE_MODE 1
-#define FILENAME         string("out.bin");
+#define INTERACTIVE_MODE 0
+#define FILENAME         string("out.bin")
 
 /*
 * run_oisc_thread
@@ -64,6 +64,6 @@ void run_oisc(string filename)
 	thread out_thread(output_thred, mem);
 
 	// Join and make sure terminal is reset to normal state
-	sim_thread.join();
+	out_thread.join();
 	system("/bin/stty cooked");
 }

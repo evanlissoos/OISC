@@ -11,7 +11,7 @@ class cpu_info():
 # Metadata required by classes and functions
 class metadata():
 	def __init__(self, s_l):
-		self.labels			  = {'__start__': s_l}
+		self.labels			  = {'__start__': s_l, 'NEG_ONE': 0x35, 'POS_ONE': 0x36, 'ZERO': 0, 'Z': 0, 'FKEY': 0x30, 'DKEY': 0x31, 'FDISP': 0x40, 'DDISP': 0x41}
 		self.cur_address		 = s_l
 		self.line_number		 = 1
 		self.supported_ops	     = {}

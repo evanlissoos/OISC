@@ -10,7 +10,11 @@ elif [ $COMMAND == "init" ]; then
 	make -C src/simulation/
 	make cleano -C src/simulation/
 elif [ $COMMAND == "asm" ]; then
-	python src/assembler/oisc_assembler.py -i $IN_FILE -o $OUT_FILE
+	if command -v python3 > /dev/null 2>&1; then
+    python3 -B src/assembler/oisc_assembler.py -i $IN_FILE -o $OUT_FILE
+	else
+		echo Python 3 required, sorry fam
+	fi
 elif [ $COMMAND == "sim" ]; then
 	./src/simulation/oisc
 elif [ $COMMAND == "clean" ]; then

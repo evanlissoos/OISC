@@ -16,29 +16,54 @@ using namespace std;
 
 #define PRINT_HEX "0x" << setfill('0') << setw(sizeof(width_t)*2) << hex
 
-// Helpers
+/*
+* zero_mem
+*
+* description: Helper that splits string on whitespace
+* arguments  : input_string - string to operate on
+             : vec          - vector to place components in
+* returns    : None
+*/
 static void split_string(const string &input_string, vector<string> *vec)
 {
 	string str;
 	for(uint32_t i = 0; i < input_string.length(); i++)
 	{
+		// If not a space, add charachter to string
 		if(input_string[i] != ' ')
 			str += input_string[i];
+		// If space found, push the word to the vector
 		else
 		{
 			vec->push_back(str);
 			str = "";
 		}
 	}
+	// If the last string isn't empty, push it to the vector
 	if(!str.empty())
 		vec->push_back(str);
 }
 
+/*
+* print_location
+*
+* description: Helper that prints formatted memory location and value
+* arguments  : location - memory location to print
+             : value    - memory contents to print
+* returns    : None
+*/
 static void print_location(width_t location, width_t value)
 {
 	cout << PRINT_HEX << location << ": " << PRINT_HEX << value << endl;
 }
 
+/*
+* parse_literal
+*
+* description: Helper that converts a string into a width_t
+* arguments  : literal - string to convert
+* returns    : width_t representation of literal
+*/
 static width_t parse_literal(string &literal)
 {
 	if(literal.find("0x") == 0 || literal.find("0X") == 0)
@@ -51,13 +76,26 @@ static width_t parse_literal(string &literal)
 		return stoi(literal);
 }
 
+/*
+* invalid_input
+*
+* description: Helper that prints error messages
+* arguments  : error_msg - error message to be printed
+* returns    : width_t representation of literal
+*/
 static uint8_t invalid_input(string error_msg)
 {
-	cout << "Invalid input: " << error_msg << endl;
+	cerr << "Invalid input: " << error_msg << endl;
 	return 0;
 }
 
-// interactive_oisc implementation
+/*
+* get_input
+*
+* description: Handles user input for interactive mode
+* arguments  : None
+* returns    : The number of cycles that should be run
+*/
 width_t interactive_oisc::get_input()
 {
 	string input;
@@ -194,6 +232,14 @@ width_t interactive_oisc::get_input()
 	return invalid_input(string("Command not recognized."));
 }
 
+/*
+* run
+*
+* description: Override running loop for interactive_oisc (two args)
+* arguments  : continue_running         - pointer to variable that says if the oisc should continue running
+               start_address (optional) - address to start excecution (defaults to 3)
+* returns    : None
+*/
 void interactive_oisc::run(volatile uint8_t *continue_running, width_t start_address)
 {
 	pc = start_address;
@@ -210,6 +256,13 @@ void interactive_oisc::run(volatile uint8_t *continue_running, width_t start_add
 	}
 }
 
+/*
+* run
+*
+* description: Override running loop for interactive_oisc (one arg)
+* arguments  : start_address (optional) - address to start excecution (defaults to 3)
+* returns    : None
+*/
 void interactive_oisc::run(width_t start_address)
 {
 	pc = start_address;

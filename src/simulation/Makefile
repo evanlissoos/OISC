@@ -18,7 +18,7 @@ oisc.o : $(DIR_LIB)/oisc.cpp $(DIR_LIB)/oisc.h $(DIR_LIB)/cpu.h
 interactive_oisc.o : $(DIR_LIB)/interactive_oisc.cpp $(DIR_LIB)/interactive_oisc.h $(DIR_LIB)/oisc.h
 	$(CXX) $(CXXFLAGS) $(DIR_LIB)/interactive_oisc.cpp
 
-main.o : main.cpp $(DIR_LIB)/interactive_oisc.h $(DIR_LIB)/mem_io.hpp
+main.o : main.cpp main_lib.hpp $(DIR_LIB)/interactive_oisc.h $(DIR_LIB)/mem_io.hpp
 	$(CXX) $(CXXFLAGS) main.cpp
 
 clean :

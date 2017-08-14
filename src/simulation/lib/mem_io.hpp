@@ -15,6 +15,13 @@
 
 using namespace std;
 
+/*
+* input_thread
+*
+* description: Thread that handles keyboard input
+* arguments  : mem - pointer to memory block
+* returns    : None
+*/
 void input_thread(volatile width_t * mem)
 {
 	while(1)
@@ -34,6 +41,13 @@ void input_thread(volatile width_t * mem)
 	}
 }
 
+/*
+* output_thread
+*
+* description: Thread that handles terminal output
+* arguments  : mem - pointer to memory block
+* returns    : None
+*/
 void output_thred(volatile width_t * mem)
 {
 	while(1)

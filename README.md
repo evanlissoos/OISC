@@ -11,12 +11,12 @@ The instruction implemented is `subleq` which is shorthand for subtract and bran
 * 3 Argument:
 ```assembly
 subleq a, b, c   ; Mem[b] = Mem[b] - Mem[a]
-				 ; if (Mem[b] ≤ 0) goto c
+                 ; if (Mem[b] ≤ 0) goto c
 ```
 * 2 Argument:
 ```assembly
 subleq a, b	  ; Mem[b] = Mem[b] - Mem[a]
-				 ; goto PC + 3
+                  ; goto PC + 3
 ```
 
 ## How To Use
@@ -72,7 +72,7 @@ data 0o345
 
 ```assembly
 A:
-subleq 0, 0	; MEM[0] = 0
+subleq 0, 0    ; MEM[0] = 0
 subleq 0, 0, A ; JMP A
 ```
 

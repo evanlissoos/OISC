@@ -34,7 +34,7 @@ subleq 0, 1, 3
 subleq 0, 1
 ```
 
-There are currently more instructions being implemented! They aren't actually different instructions, just macros that get converted into subleq. Check out `src/assembler/lib/instructions.py` for more details :)
+There are currently more instructions being implemented! They aren't actually different instructions, just macros that get converted into `subleq`. Check out `src/assembler/lib/instructions.py` for more details :)
 
 ### Data
   Raw data can be placed in the code using the fake op-code `data` or `.data`. The data can be accessed using labels.

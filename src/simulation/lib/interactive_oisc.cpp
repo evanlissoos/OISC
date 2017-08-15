@@ -206,6 +206,8 @@ width_t interactive_oisc::get_input()
 			case 1:
 				this->zero_mem();
 				pc = 3;
+				memory[NEG_ONE] = 0xFFFF;
+				memory[POS_ONE] = 1;
 				return 0;
 			default:
 				return invalid_input(string("Too many arguments for command 'reset'."));

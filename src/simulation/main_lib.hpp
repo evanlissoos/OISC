@@ -15,7 +15,7 @@
 
 using namespace std;
 
-#define INTERACTIVE_MODE 0
+#define INTERACTIVE_MODE 1
 #define FILENAME         string("out.bin")
 
 /*

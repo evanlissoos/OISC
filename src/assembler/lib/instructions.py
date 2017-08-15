@@ -3,7 +3,7 @@ from lib.metadata import *
 from lib.parse import *
 
 # m[op2] = m[op2] - m[op1]
-# if (m[op2] ≤ 0) pc = c
+# if (m[op2] ≤ 0) pc = op3
 class subleq():
 	#Instruction data
 	def __init__(self):
@@ -130,6 +130,7 @@ class jmp():
 		meta.data_array.append(parse_literal(line_data[1]))
 
 # m[b] = m[a] * m[b]
+# UNSIGNED
 class mul():
 	# Instruction data
 	def __init__(self):
@@ -176,6 +177,45 @@ class mul():
 		meta.data_array.append(0)
 		meta.data_array.append(len(meta.data_array) + cpu.start_location + 1)
 
+class bit_not():
+	# Instruction data
+	def __init__(self):
+		self.min_operands = 1
+		self.max_operands = 1
+		self.total_mem	= 21
+
+	# Parse function
+	def parse_op(self, line_data):
+		op = parse_literal(line_data[1])
+		# First instruction (flip)
+		meta.data_array.append(op)
+		meta.data_array.append(0)
+		meta.data_array.append(len(meta.data_array) + cpu.start_location + 1)
+		# Second instruction (sub 1)
+		meta.data_array.append(op)
+		meta.data_array.append(0x36)
+		meta.data_array.append(len(meta.data_array) + cpu.start_location + 1)
+		# Third instruction (clear op)
+		meta.data_array.append(op)
+		meta.data_array.append(op)
+		meta.data_array.append(len(meta.data_array) + cpu.start_location + 1)
+		# Fourth instruction (transfer part 1)
+		meta.data_array.append(0)
+		meta.data_array.append(1)
+		meta.data_array.append(len(meta.data_array) + cpu.start_location + 1)
+		# Fifth instruction (transfer part 2)
+		meta.data_array.append(1)
+		meta.data_array.append(op)
+		meta.data_array.append(len(meta.data_array) + cpu.start_location + 1)
+		# Sixth instruction (reset M[0])
+		meta.data_array.append(0)
+		meta.data_array.append(0)
+		meta.data_array.append(len(meta.data_array) + cpu.start_location + 1)
+		# Seventh instruction (reset M[1])
+		meta.data_array.append(1)
+		meta.data_array.append(1)
+		meta.data_array.append(len(meta.data_array) + cpu.start_location + 1)
+
 class halt():
 	# Instruction data
 	def __init__(self):
@@ -189,4 +229,4 @@ class halt():
 		meta.data_array.append(0)
 		meta.data_array.append(0)
 
-meta.supported_ops = {'subleq': subleq(), 'jmp':jmp(), 'mov':mov(), 'data': data(), 'add': add(), 'inc': inc(), 'sub':sub(), 'mul':mul(), 'halt': halt()}
+meta.supported_ops = {'subleq': subleq(), 'jmp':jmp(), 'mov':mov(), 'data': data(), 'add': add(), 'inc': inc(), 'sub':sub(), 'mul':mul(), 'halt': halt(), 'not': bit_not()}

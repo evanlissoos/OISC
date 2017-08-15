@@ -14,7 +14,7 @@
 
 using namespace std;
 
-#define PRINT_HEX "0x" << setfill('0') << setw(sizeof(width_t)*2) << hex
+#define PRINT_HEX "0x" << setfill('0') << setw(sizeof(uwidth_t)*2) << hex
 
 /*
 * zero_mem
@@ -52,7 +52,7 @@ static void split_string(const string &input_string, vector<string> *vec)
              : value    - memory contents to print
 * returns    : None
 */
-static void print_location(width_t location, width_t value)
+static void print_location(uwidth_t location, uwidth_t value)
 {
 	cout << PRINT_HEX << location << ": " << PRINT_HEX << value << endl;
 }
@@ -60,11 +60,11 @@ static void print_location(width_t location, width_t value)
 /*
 * parse_literal
 *
-* description: Helper that converts a string into a width_t
+* description: Helper that converts a string into a uwidth_t
 * arguments  : literal - string to convert
-* returns    : width_t representation of literal
+* returns    : uwidth_t representation of literal
 */
-static width_t parse_literal(string &literal)
+static uwidth_t parse_literal(string &literal)
 {
 	if(literal.find("0x") == 0 || literal.find("0X") == 0)
 		return stoi(literal, 0, 16);
@@ -81,7 +81,7 @@ static width_t parse_literal(string &literal)
 *
 * description: Helper that prints error messages
 * arguments  : error_msg - error message to be printed
-* returns    : width_t representation of literal
+* returns    : uwidth_t representation of literal
 */
 static uint8_t invalid_input(string error_msg)
 {
@@ -96,7 +96,7 @@ static uint8_t invalid_input(string error_msg)
 * arguments  : None
 * returns    : The number of cycles that should be run
 */
-width_t interactive_oisc::get_input()
+uwidth_t interactive_oisc::get_input()
 {
 	string input;
 	getline(cin, input);
@@ -114,7 +114,7 @@ width_t interactive_oisc::get_input()
 				return invalid_input(string("Too few arguments for command 'print'."));
 			case 2:
 			{
-				width_t location = stoi((*parsed_input)[1]);
+				uwidth_t location = stoi((*parsed_input)[1]);
 				print_location(location, memory[location]);
 				return 0;
 			}
@@ -180,7 +180,7 @@ width_t interactive_oisc::get_input()
 	else if(strcmp("memdump", (*parsed_input)[0].c_str()) == 0)
 	{
 		uint8_t num_locations = 8;
-		width_t start_location = pc;
+		uwidth_t start_location = pc;
 
 		switch(num_args)
 		{
@@ -205,7 +205,7 @@ width_t interactive_oisc::get_input()
 		{
 			case 1:
 				this->zero_mem();
-				pc = 3;
+				pc = LOAD_ADDRESS;
 				memory[NEG_ONE] = 0xFFFF;
 				memory[POS_ONE] = 1;
 				return 0;
@@ -242,7 +242,7 @@ width_t interactive_oisc::get_input()
                start_address (optional) - address to start excecution (defaults to 3)
 * returns    : None
 */
-void interactive_oisc::run(volatile uint8_t *continue_running, width_t start_address)
+void interactive_oisc::run(volatile uint8_t *continue_running, uwidth_t start_address)
 {
 	pc = start_address;
 	uint64_t num_steps;
@@ -265,7 +265,7 @@ void interactive_oisc::run(volatile uint8_t *continue_running, width_t start_add
 * arguments  : start_address (optional) - address to start excecution (defaults to 3)
 * returns    : None
 */
-void interactive_oisc::run(width_t start_address)
+void interactive_oisc::run(uwidth_t start_address)
 {
 	pc = start_address;
 	uint64_t num_steps;
@@ -281,7 +281,7 @@ void interactive_oisc::run(width_t start_address)
 			have_printed = true;
 		}
 		num_steps = get_input();
-		if(num_steps == (width_t) -1)	return;
+		if(num_steps == (uwidth_t) -1)	return;
 		while(num_steps > 0)
 		{
 			cycle();

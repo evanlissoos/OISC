@@ -8,8 +8,7 @@ TEMP_Z:
 
   ; Divide by zero checks
 FIRST_Z_CHECK:
-  subleq  0, A, END; Can't divide by zero
-  jmp     SECOND_Z_CHECK
+  subleq  0, A, SECOND_Z_CHECK; Can't divide by zero
 
   ; Main division loop
 TOP:
@@ -19,33 +18,23 @@ TOP:
 
 DONE:
   ; B = remainder
-  subleq  TEMP_Z, 
+  subleq  B, TEMP_Z, REM_ZERO ; Check if remainder zero
+  add     A, B                ; If not, need to add A to B to get remainder
 
-  subleq  B, TEMP_Z
-  ; Manual mov so we can jump if remainder zero
-  subleq  B, B
-  subleq  TEMP_Z, 0
-  subleq  0, B, REM_ZERO
-END_MOV_B:
-  subleq  0, 0
-
+MOV_A:
   ; A = quotient
   mov     QUOTIENT, A
 
-
-
 END:
-  subleq  0, 0                ; Reset zero
   halt
 
 SECOND_Z_CHECK:
   subleq  A, 0, END           ; Can't divide by zero
-  subleq  0, 0                ; Reset zero
-  jmp TOP
+  subleq  0, 0, TOP           ; Reset zero and jump back
 
 REM_ZERO:
-  inc     QUOTIENT
-  jmp     END_MOV_B
+  inc     QUOTIENT            ; If so, need to increment quotient
+  jmp     MOV_A
 
 
 A:

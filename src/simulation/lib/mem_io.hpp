@@ -22,7 +22,7 @@ using namespace std;
 * arguments  : mem - pointer to memory block
 * returns    : None
 */
-void input_thread(volatile width_t * mem)
+void input_thread(volatile uwidth_t * mem)
 {
 	while(1)
 	{
@@ -48,7 +48,7 @@ void input_thread(volatile width_t * mem)
 * arguments  : mem - pointer to memory block
 * returns    : None
 */
-void output_thred(volatile width_t * mem)
+void output_thred(volatile uwidth_t * mem)
 {
 	while(1)
 	{

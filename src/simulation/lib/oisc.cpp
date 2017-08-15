@@ -18,11 +18,11 @@
 oisc::oisc()
 {
 	// Allocate memory and mark as owner of memory
-	pc = 3;
-	memory = new width_t[MEM_SIZE];
+	pc = LOAD_ADDRESS;
+	memory = new uwidth_t[MEM_SIZE];
 	this->zero_mem();
-	memory[NEG_ONE] = 0xFFFF;
-	memory[POS_ONE] = 0x0001;
+	memory[NEG_ONE] = -1;
+	memory[POS_ONE] = 1;
 	memory_owner = true;
 }
 
@@ -33,10 +33,10 @@ oisc::oisc()
 * arguments  : mem - pointer to memory block
 * returns    : None
 */
-oisc::oisc(volatile width_t * mem)
+oisc::oisc(volatile uwidth_t * mem)
 {
 	// Copy memory pointer
-	pc = 3;
+	pc = LOAD_ADDRESS;
 	memory = mem;
 	memory_owner = false;
 }
@@ -61,7 +61,7 @@ oisc::~oisc()
 * arguments  : None
 * returns    : Pointer to memory block for this object
 */
-volatile width_t * oisc::get_memory()
+volatile uwidth_t * oisc::get_memory()
 {
 	return memory;
 }
@@ -73,7 +73,7 @@ volatile width_t * oisc::get_memory()
 * arguments  : None
 * returns    : Value of PC
 */
-width_t oisc::get_pc()
+uwidth_t oisc::get_pc()
 {
 	return pc;
 }
@@ -85,7 +85,7 @@ width_t oisc::get_pc()
 * arguments  : start_address (optional) - address to start execution (defaults to 3)
 * returns    : None
 */
-void oisc::run(width_t start_address)
+void oisc::run(uwidth_t start_address)
 {
 	// Halting condition is PC getting to 0
 	// Since the first 3 memory addresses are 0, if PC reaches 0, it will stay there
@@ -101,7 +101,7 @@ void oisc::run(width_t start_address)
              : end_address   - last address to load data
 * returns    : None
 */
-void oisc::load_memory(width_t start_address, width_t end_address, width_t * data)
+void oisc::load_memory(uwidth_t start_address, uwidth_t end_address, uwidth_t * data)
 {
 	memcpy((void *) &(memory[start_address]), (void *) data, (end_address - start_address) * sizeof(data));
 }
@@ -118,7 +118,7 @@ uint8_t oisc::load_file(string filename)
 	// Open file and get length
 	ifstream file_in(filename, ios::in | ios::binary);
 	file_in.seekg(0, file_in.end);
-	width_t length = file_in.tellg();
+	uwidth_t length = file_in.tellg();
 	file_in.seekg(0, file_in.beg);
 
 	// If the binary is too big to fit in memory, exit function
@@ -132,10 +132,8 @@ uint8_t oisc::load_file(string filename)
 	file_in.read((char *) &(memory[LOAD_ADDRESS]), length);
 	file_in.close();
 
-	// Loading jump to start address at current PC location
-	memory[pc]	 = 0;
-	memory[pc + 1] = 0;
-	memory[pc + 2] = LOAD_ADDRESS;
+	// Set PC to where file was loaded
+	pc = LOAD_ADDRESS;
 	return 0;
 }
 
@@ -148,7 +146,7 @@ uint8_t oisc::load_file(string filename)
 */
 void oisc::zero_mem()
 {
-	memset((void*) memory, 0, MEM_SIZE * sizeof(width_t));
+	memset((void*) memory, 0, MEM_SIZE * sizeof(uwidth_t));
 }
 
 /*
@@ -161,12 +159,12 @@ void oisc::zero_mem()
 void oisc::cycle()
 {
 	// Getting operands
-	width_t a, b, c;
+	uwidth_t a, b, c;
 	a = memory[pc];
 	b = memory[pc + 1];
 	c = memory[pc + 2];
 	// Performing arithmatic step
 	memory[b] = memory[b] - memory[a];
 	// Performing branch step
-	pc = (memory[b] > 0) ? pc + 3 : c;
+	pc = ((int16_t) memory[b] > 0) ? pc + 3 : c;
 }

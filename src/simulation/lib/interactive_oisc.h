@@ -15,10 +15,10 @@ class interactive_oisc: public oisc
 {
 	// Interactive functions
 	public:
-		void run(volatile uint8_t *continue_running, width_t start_address = 3);
-		void run(width_t start_address = 3);
+		void run(volatile uint8_t *continue_running, uwidth_t start_address = LOAD_ADDRESS);
+		void run(uwidth_t start_address = LOAD_ADDRESS);
 	private:
-		width_t get_input();
+		uwidth_t get_input();
 };
 
 #endif //INTERACTIVE_OISC_H

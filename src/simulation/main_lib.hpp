@@ -58,7 +58,7 @@ void run_oisc(string filename)
 	test_oisc->load_file(filename);
 
 	// Start threads
-	volatile width_t * mem = test_oisc->get_memory();
+	volatile uwidth_t * mem = test_oisc->get_memory();
 	thread sim_thread(run_oisc_thread, test_oisc);
 	thread in_thread (input_thread, mem);
 	thread out_thread(output_thred, mem);

@@ -21,22 +21,22 @@ class oisc
 	public:
 		// Constructiors and destructors
 		oisc();
-		oisc(volatile width_t * mem);
+		oisc(volatile uwidth_t * mem);
 		virtual ~oisc();
 		// Getters
-		volatile width_t * get_memory();
-		width_t			       get_pc();
+		volatile uwidth_t * get_memory();
+		uwidth_t			       get_pc();
 		// Setup and run functions
-		virtual void run(width_t start_address = 3);
-		void	       load_memory(width_t start_address, width_t end_address, width_t * data);
+		virtual void run(uwidth_t start_address = LOAD_ADDRESS);
+		void	       load_memory(uwidth_t start_address, uwidth_t end_address, uwidth_t * data);
 		uint8_t      load_file(string filename);
 		void	       zero_mem();
 	protected:
 		// Simulation function
 		void cycle();
 		// Attributes
-		width_t			       pc;
-		volatile width_t * memory;
+		uwidth_t			       pc;
+		volatile uwidth_t * memory;
 		uint8_t			       memory_owner;
 };
 

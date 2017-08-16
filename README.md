@@ -99,7 +99,7 @@ The initial plan is to make a basic simulation of the ISA. From there, there's a
 
 ## FAQ
 ##### Why did you use C++?
-Pointers are ~~a fucking bitch to debug~~ really fun.
+Pointers are ~~a bitch to debug~~ really fun.
 ##### Can I use this thing for another thing I wanna do?
 Go for it.
 ##### Are you stupid?

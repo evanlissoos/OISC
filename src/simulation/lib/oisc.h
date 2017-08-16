@@ -34,10 +34,12 @@ class oisc
 	protected:
 		// Simulation function
 		void cycle();
+		// Initialization function
+		void init();
 		// Attributes
-		uwidth_t			       pc;
+		uwidth_t			      pc;
 		volatile uwidth_t * memory;
-		uint8_t			       memory_owner;
+		uint8_t			        memory_owner;
 };
 
 #endif //OISC_H

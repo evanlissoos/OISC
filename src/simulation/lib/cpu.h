@@ -24,8 +24,10 @@
 // Data addresses     (64d)
 #define DISPLAY_FLAG	    0x7
 #define DISPLAY_DATA	    0x8
+// Where powers of two are stored
+#define BASE_POWERS_2     0x9
 // Where programs get loaded
-#define LOAD_ADDRESS	    0x10
+#define LOAD_ADDRESS	    0x100
 
 // CPU parameters dependent on other fields
 #define BIT_WIDTH		    (8 * sizeof(uwidth_t))

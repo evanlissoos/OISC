@@ -20,10 +20,8 @@ oisc::oisc()
 	// Allocate memory and mark as owner of memory
 	pc = LOAD_ADDRESS;
 	memory = new uwidth_t[MEM_SIZE];
-	this->zero_mem();
-	memory[NEG_ONE] = -1;
-	memory[POS_ONE] = 1;
 	memory_owner = true;
+	init();
 }
 
 /*
@@ -167,4 +165,20 @@ void oisc::cycle()
 	memory[b] = memory[b] - memory[a];
 	// Performing branch step
 	pc = ((int16_t) memory[b] > 0) ? pc + 3 : c;
+}
+
+/*
+* init
+*
+* description: Initializes oisc memory
+* arguments  : None
+* returns    : None
+*/
+void oisc::init()
+{
+	this->zero_mem();
+	memory[NEG_ONE] = -1;
+	memory[POS_ONE] = 1;
+	for(unsigned long i = 0 ; i < 8 * sizeof(width_t); i++)
+		memory[BASE_POWERS_2 + i] = 1 << i;
 }

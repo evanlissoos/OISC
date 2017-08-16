@@ -215,6 +215,65 @@ class bit_shift_left():
 		end = next()
 		meta.data_array.append(end)
 
+# M[B] = M[A] >> M[B]
+# NOTE: Modifies M[A]
+class bit_shift_right():
+	# Instruction data
+	def __init__(self):
+		self.min_operands = 2
+		self.max_operands = 2
+		self.total_mem    = 30
+
+	# Parse function
+	def parse_op(self, line_data):
+		op1 = parse_literal(line_data[1])
+		op2 = parse_literal(line_data[2])
+		# First instruction
+		tempz = next() - 1
+		rem_zero = tempz + 3
+		meta.data_array.append(0)
+		meta.data_array.append(0)
+		meta.data_array.append(rem_zero + 6)
+
+		meta.data_array.append(0x3)
+		meta.data_array.append(op2)
+		meta.data_array.append(next())
+
+		done = next() + 20
+		meta.data_array.append(0)
+		meta.data_array.append(0)
+		meta.data_array.append(done + 3)
+
+		# Second instruction (ADD)
+		meta.data_array.append(op2)
+		meta.data_array.append(tempz)
+		meta.data_array.append(next())
+
+		top = next() + 5
+		meta.data_array.append(tempz)
+		meta.data_array.append(top)
+		meta.data_array.append(next())
+		# Third instruction (clear op2)
+		meta.data_array.append(op2)
+		meta.data_array.append(op2)
+		meta.data_array.append(top)
+		# Fourth instruction TOP
+		meta.data_array.append(0x9)
+		meta.data_array.append(op1)
+		meta.data_array.append(done)
+		# Fifth instruction inc op2
+		meta.data_array.append(0x3)
+		meta.data_array.append(op2)
+		meta.data_array.append(next())
+		# Sixth instruction jmp top
+		meta.data_array.append(tempz)
+		meta.data_array.append(0)
+		meta.data_array.append(top)
+		# Seventh instruction DONE
+		meta.data_array.append(op1)
+		meta.data_array.append(tempz)
+		meta.data_array.append(rem_zero)
+
 # M[A] = ~M[A]
 class bit_not():
 	# Instruction data
@@ -463,4 +522,4 @@ class dec():
 		meta.data_array.append(parse_literal(line_data[1]))
 		meta.data_array.append(next())
 
-meta.supported_ops = {'subleq': subleq(), 'jmp':jmp(), 'mov':mov(), 'data': data(), 'add': add(), 'inc': inc(), 'sub':sub(), 'mul':mul(), 'div':div(), 'halt': halt(), 'not': bit_not(), 'shl':bit_shift_left()}
+meta.supported_ops = {'subleq': subleq(), 'jmp':jmp(), 'mov':mov(), 'data': data(), 'add': add(), 'inc': inc(), 'sub':sub(), 'mul':mul(), 'div':div(), 'halt': halt(), 'not': bit_not(), 'shl': bit_shift_left(), 'shr': bit_shift_right()}

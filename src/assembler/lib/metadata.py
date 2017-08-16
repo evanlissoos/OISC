@@ -11,7 +11,7 @@ class cpu_info():
 # Metadata required by classes and functions
 class metadata():
 	def __init__(self, s_l):
-		self.labels			     = {'__start__': s_l, 'NEG_ONE': 0x3, 'POS_ONE': 0x4, 'ZERO': 0, 'Z': 0, 'FKEY': 0x5, 'DKEY': 0x6, 'FDISP': 0x7, 'DDISP': 0x8}
+		self.labels			     = {'__start__': s_l, 'NEG_ONE': 0x3, 'POS_ONE': 0x4, 'ZERO': 0, 'Z': 0, 'FKEY': 0x5, 'DKEY': 0x6, 'FDISP': 0x7, 'DDISP': 0x8, 'POW2': 0x9}
 		self.cur_address		 = s_l
 		self.line_number		 = 1
 		self.supported_ops	     = {}
@@ -23,7 +23,7 @@ def error(err_message):
 	quit()
 
 # Structures used for global tracking
-s_l = 0x10
+s_l = 0x100
 b_w = 16
 cpu = cpu_info(s_l, b_w)
 meta = metadata(s_l)
